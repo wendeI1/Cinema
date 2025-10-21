@@ -72,14 +72,15 @@ int main()
     senha[strcspn(senha, "\n")] = '\0';
     if (strcmp(senha, "1234") == 0)
     {
-      printf("bem vindo adm\n");
       do
       {
+        system("cls");
+        printf("Bem vindo ADM!\n");
         printf("Escolha o que deseja fazer\n");
-        printf("1 - Criar sala\n");
-        printf("2 - Excluir sala\n");
-        printf("3 - Editar sala\n");
-        printf("4 - Ver salas\n");
+        printf("1 - Criar sessao\n");
+        printf("2 - Editar sessao\n");
+        printf("3 - Ver sessoes\n");
+        printf("4 - Excluir sessao\n");
         printf("5 - Sair\n");
         fgets(entrada, sizeof(entrada), stdin);
         int op = atoi(entrada);
@@ -92,26 +93,50 @@ int main()
           mostrarSala(salas[totalSalas].sala, totalSalas, LINHA, COLUNA);
           totalSalas++;
           printf("Sala criada!\n");
+          system("pause");
           break;
 
         case 2:
-          printf("Digite o numero da sala que você deseja excluir o filme: ");
+          printf("Digite o numero da sala que voce deseja alterar o filme: ");
           scanf("%d", &numeroSala);
+          while (getchar() != '\n');
 
           for (int i = 0; i < totalSalas; i++)
           {
-            strcpy(salas[i].nomeFilme, "Nenhum filme");
+            if (salas[i].numeroSala == numeroSala)
+            {
+              printf("Digite o nome do novo filme: ");
+              fgets(salas[i].nomeFilme, TAM_NOME, stdin);
+              mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+            }
           }
+          system("pause");  
           break;
-
         case 3:
           for (int i = 0; i < totalSalas; i++)
-          {
-            mostrarSala(salas[i].sala, i, LINHA, COLUNA);
-          }
+              {
+                mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+              }
+          system("pause");
+          break;  
+        case 4:
+          printf("Digite o numero da sala que você deseja excluir o filme: ");
+          scanf("%d", &numeroSala);
+          while (getchar() != '\n');
+
+          for (int i = 0; i < totalSalas; i++)
+            {
+              strcpy(salas[i].nomeFilme, "Sessao sem filme.");
+            }
+          printf("Sessao excluida!\n");
+          system("pause");
           break;
+        case 5:
+          op = 5;
+        break;
         default:
-          printf("deu ruim");
+          printf("Opcao invalida!");
+          system("pause");
           break;
         }
       } while (op != 5);
