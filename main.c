@@ -29,6 +29,7 @@ void criarSala(int totalSalas)
 }
 void mostrarSala(int sala[LINHA][COLUNA], int totalSala, int linhas, int colunas)
 {
+  printf("\n------------------------------\n");
   printf("Sala %d\n", salas[totalSala].numeroSala);
   printf("Filme: %s\n", salas[totalSala].nomeFilme);
   printf("    ");
@@ -47,9 +48,6 @@ void mostrarSala(int sala[LINHA][COLUNA], int totalSala, int linhas, int colunas
     }
     printf("\n");
   }
-
-  printf("\n*Linha > -- *Coluna ^\n");
-  printf("1 - Assento reservado\n0 - Assento disponivel\n");
 }
 
 int main()
@@ -67,7 +65,7 @@ int main()
 
   if (strcmp(user, "admin") == 0)
   {
-    printf("digite sua senha adm: \n");
+    printf("Digite sua senha: \n");
     fgets(senha, sizeof(senha), stdin);
     senha[strcspn(senha, "\n")] = '\0';
     if (strcmp(senha, "1234") == 0)
@@ -91,6 +89,8 @@ int main()
           system("cls");
           criarSala(totalSalas);
           mostrarSala(salas[totalSalas].sala, totalSalas, LINHA, COLUNA);
+          printf("\n*Linha > -- *Coluna ^\n");
+          printf("1 - Assento reservado\n0 - Assento disponivel\n");
           totalSalas++;
           printf("Sala criada!\n");
           system("pause");
@@ -143,12 +143,13 @@ int main()
     }
     else
     {
-      printf("senha incorreta adm");
+      printf("Senha incorreta!");
     }
   }
   else
   {
-    printf("ola usuario");
+    printf("Ola %s!", user);
+    // TO DO: Implementar interface de usuario e suas respectivas funções
   }
   return 0;
 }
