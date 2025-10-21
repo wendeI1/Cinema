@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#define LINHA 8
+#define COLUNA 10
+#define TAM_NOME 50
+
+struct Sala
+{
+  char nomeFilme[TAM_NOME];
+  int numeroSala;
+  int sala[LINHA][COLUNA];
+};
+
+struct Sala salas[10];
+
+void criarSala(int totalSalas)
+{
+  printf("Digite o nome do filme: ");
+  fgets(salas[totalSalas].nomeFilme, TAM_NOME, stdin);
+  salas[totalSalas].numeroSala = totalSalas;
+  for (int i = 0; i < LINHA; i++)
+  {
+    for (int j = 0; j < COLUNA; j++)
+    {
+      salas[totalSalas].sala[i][j] = 0;
+    }
+  }
+}
+void mostrarSala(int sala[LINHA][COLUNA], int totalSala, int linhas, int colunas)
+{
+  printf("Sala %d\n", salas[totalSala].numeroSala);
+  printf("Filme: %s\n", salas[totalSala].nomeFilme);
+  printf("    ");
+  for (int i = 0; i < colunas; i++)
+  {
+    printf("%d  ", i + 1);
+  }
+  printf("\n");
+
+  for (int i = 0; i < linhas; i++)
+  {
+    printf("%d   ", i + 1);
+    for (int j = 0; j < colunas; j++)
+    {
+      printf("%d  ", sala[i][j]);
+    }
+    printf("\n");
+  }
+
+  printf("\n*Linha > -- *Coluna ^\n");
+  printf("1 - Assento reservado\n0 - Assento disponivel\n");
+}
+
+int main()
+{
+  char user[10];
+  char senha[10];
+  int numeroSala;
+  int totalSalas = 0;
+  int op = 0;
+  char entrada[10];
+
+  printf("Digite seu usuario: \n");
+  fgets(user, sizeof(user), stdin);
+  user[strcspn(user, "\n")] = '\0';
+
+  if (strcmp(user, "admin") == 0)
+  {
+    printf("digite sua senha adm: \n");
+    fgets(senha, sizeof(senha), stdin);
+    senha[strcspn(senha, "\n")] = '\0';
+    if (strcmp(senha, "1234") == 0)
+    {
+      printf("bem vindo adm\n");
+      do
+      {
+        printf("Escolha o que deseja fazer\n");
+        printf("1 - Criar sala\n");
+        printf("2 - Excluir sala\n");
+        printf("3 - Editar sala\n");
+        printf("4 - Ver salas\n");
+        printf("5 - Sair\n");
+        fgets(entrada, sizeof(entrada), stdin);
+        int op = atoi(entrada);
+
+        switch (op)
+        {
+        case 1:
+          system("cls");
+          criarSala(totalSalas);
+          mostrarSala(salas[totalSalas].sala, totalSalas, LINHA, COLUNA);
+          totalSalas++;
+          printf("Sala criada!\n");
+          break;
+
+        case 2:
+          printf("Digite o numero da sala que você deseja excluir o filme: ");
+          scanf("%d", &numeroSala);
+
+          for (int i = 0; i < totalSalas; i++)
+          {
+            strcpy(salas[i].nomeFilme, "Nenhum filme");
+          }
+          break;
+
+        case 3:
+          for (int i = 0; i < totalSalas; i++)
+          {
+            mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+          }
+          break;
+        default:
+          printf("deu ruim");
+          break;
+        }
+      } while (op != 5);
+    }
+    else
+    {
+      printf("senha incorreta adm");
+    }
+  }
+  else
+  {
+    printf("ola usuario");
+  }
+  return 0;
+}
