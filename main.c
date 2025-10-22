@@ -9,17 +9,24 @@ struct Sala
 {
   char nomeFilme[TAM_NOME];
   int numeroSala;
+  int horario;
   int sala[LINHA][COLUNA];
 };
 
-struct Sala salas[10];
+struct Sala salas[5];
 
 void criarSala(int totalSalas)
 {
+  char horarioTemp[10];	
+  
   printf("Digite o nome do filme: ");
   fgets(salas[totalSalas].nomeFilme, TAM_NOME, stdin);
+  printf("Digite o horario da sessao: ");
+  fgets(horarioTemp, sizeof(horarioTemp), stdin);
+  salas[totalSalas].horario = atoi(horarioTemp);
   salas[totalSalas].numeroSala = totalSalas;
-  for (int i = 0; i < LINHA; i++)
+  
+  for(int i = 0; i < LINHA; i++)
   {
     for (int j = 0; j < COLUNA; j++)
     {
@@ -32,6 +39,7 @@ void mostrarSala(int sala[LINHA][COLUNA], int totalSala, int linhas, int colunas
   printf("\n------------------------------\n");
   printf("Sala %d\n", salas[totalSala].numeroSala);
   printf("Filme: %s\n", salas[totalSala].nomeFilme);
+  printf("Horario: %d\n", salas[totalSala].horario);
   printf("    ");
   for (int i = 0; i < colunas; i++)
   {
@@ -86,14 +94,19 @@ int main()
         switch (op)
         {
         case 1:
-          system("cls");
-          criarSala(totalSalas);
-          mostrarSala(salas[totalSalas].sala, totalSalas, LINHA, COLUNA);
-          printf("\n*Linha > -- *Coluna ^\n");
-          printf("1 - Assento reservado\n0 - Assento disponivel\n");
-          totalSalas++;
-          printf("Sala criada!\n");
-          system("pause");
+        	if(totalSalas < 5){
+        		system("cls");
+			    criarSala(totalSalas);
+			    mostrarSala(salas[totalSalas].sala, totalSalas, LINHA, COLUNA);
+			    printf("\n*Linha > -- *Coluna ^\n");
+			    printf("1 - Assento reservado\n0 - Assento disponivel\n");
+			    totalSalas++;
+			    printf("Sala criada!\n");
+			    system("pause");
+			}else{
+				printf("Numero de salas excedido!\n");
+				system("pause");
+			}
           break;
 
         case 2:
@@ -120,13 +133,15 @@ int main()
           system("pause");
           break;  
         case 4:
-          printf("Digite o numero da sala que você deseja excluir o filme: ");
+          printf("Digite o numero da sala que voce deseja excluir o filme: ");
           scanf("%d", &numeroSala);
           while (getchar() != '\n');
 
           for (int i = 0; i < totalSalas; i++)
             {
-              strcpy(salas[i].nomeFilme, "Sessao sem filme.");
+            	if(salas[i].numeroSala == numeroSala){
+            	  strcpy(salas[i].nomeFilme, "Sessao sem filme.");	
+				}
             }
           printf("Sessao excluida!\n");
           system("pause");
@@ -150,6 +165,7 @@ int main()
   {
     printf("Ola %s!", user);
     // TO DO: Implementar interface de usuario e suas respectivas funções
+    //acessar sala disponivel
   }
   return 0;
 }
