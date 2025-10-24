@@ -5,7 +5,7 @@
 #define COLUNA 10
 #define TAM_NOME 50
 
-struct user
+struct User
 {
   char nome[TAM_NOME];
   char senha[10];
@@ -63,6 +63,10 @@ void mostrarSala(int sala[LINHA][COLUNA], int totalSala, int linhas, int colunas
     }
     printf("\n");
   }
+}
+
+void reservarAssento(int sala[LINHA][COLUNA], int linha, int coluna){
+			sala[linha][coluna] = 1;
 }
 
 int main()
@@ -193,7 +197,10 @@ int main()
       }
       else
       {
-        op = 0;
+        char nomeFilmeUser[TAM_NOME];
+        char entradaLinha[10];
+        char entradaColuna[10];
+        int linha, coluna;
         printf("Ola %s!\n", user);
         // TO DO: Implementar interface de usuario e suas respectivas funções
         // acessar sala disponivel
@@ -229,7 +236,27 @@ int main()
             }
             break;
           case 2:
-            /* code */
+          	printf("Digite o nome do filme que deseja: ");
+          	fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
+          	
+          	for(int i = 0; i < totalSalas; i++){
+          		if(strcmp(salas[i].nomeFilme, nomeFilmeUser) == 0){
+          			mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+          			
+          			printf("Digite a linha que deseja reservar o assento: ");
+          			fgets(entradaLinha, sizeof(entradaLinha), stdin);
+          			printf("Digite a coluna que deseja reservar o assento: ");
+          			fgets(entradaColuna, sizeof(entradaColuna), stdin);
+          			
+          			linha = atoi(entradaLinha) - 1;
+          			coluna = atoi(entradaColuna) - 1;
+          			
+          			salas[i].sala[linha][coluna] = 1;
+          			printf("Assento reservado!\n");
+				  }else{
+				  	printf("Nenhuma sess�o com esse filme disponivel! :()\n");
+				  }
+			  }
             break;
           case 3:
             /* code */
