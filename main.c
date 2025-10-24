@@ -65,10 +65,6 @@ void mostrarSala(int sala[LINHA][COLUNA], int totalSala, int linhas, int colunas
   }
 }
 
-void reservarAssento(int sala[LINHA][COLUNA], int linha, int coluna){
-			sala[linha][coluna] = 1;
-}
-
 int main()
 {
   char user[10];
