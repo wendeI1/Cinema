@@ -9,6 +9,8 @@ struct User
 {
   char nome[TAM_NOME];
   char senha[10];
+  int indice;
+  struct Sala *reserva;
 };
 
 struct Sala
@@ -17,10 +19,23 @@ struct Sala
   int numeroSala;
   int horario;
   int sala[LINHA][COLUNA];
+  struct User *cinefilo;
 };
 
 struct User users[100];
 struct Sala salas[5];
+
+int verificarUser(char user[10], char senha[10], int totalUser)
+{
+  for (int i = 0; i < totalUser; i++)
+  {
+    if (strcmp(users[i].nome, user) == 0 && strcmp(users[i].senha, senha) == 0)
+    {
+      return i;
+    }
+  }
+  return 0;
+}
 
 void criarSala(int totalSalas)
 {
@@ -69,6 +84,8 @@ int main()
 {
   char user[10];
   char senha[10];
+  int totalUsers = 0;
+  int userLogado = -1;
   int numeroSala;
   int totalSalas = 0;
   int op = 0;
@@ -93,105 +110,101 @@ int main()
       fgets(user, sizeof(user), stdin);
       user[strcspn(user, "\n")] = '\0';
 
-      if (strcmp(user, "admin") == 0)
+      printf("Digite sua senha: \n");
+      fgets(senha, sizeof(senha), stdin);
+      senha[strcspn(senha, "\n")] = '\0';
+
+      userLogado = verificarUser(user, senha, totalUsers);
+
+      if (strcmp(user, "admin") == 0 && strcmp(senha, "1234") == 0)
       {
-        printf("Digite sua senha: \n");
-        fgets(senha, sizeof(senha), stdin);
-        senha[strcspn(senha, "\n")] = '\0';
-        if (strcmp(senha, "1234") == 0)
+        do
         {
-          do
+          system("cls");
+          printf("Painel Admnistrativo CCinemork\n");
+          printf("Escolha o que deseja fazer\n");
+          printf("1 - Criar sessao\n");
+          printf("2 - Editar sessao\n");
+          printf("3 - Ver sessoes\n");
+          printf("4 - Excluir sessao\n");
+          printf("5 - Sair\n");
+          fgets(entrada1, sizeof(entrada1), stdin);
+          op = atoi(entrada1);
+
+          switch (op)
           {
-            system("cls");
-            printf("Painel Admnistrativo CCinemork\n");
-            printf("Escolha o que deseja fazer\n");
-            printf("1 - Criar sessao\n");
-            printf("2 - Editar sessao\n");
-            printf("3 - Ver sessoes\n");
-            printf("4 - Excluir sessao\n");
-            printf("5 - Sair\n");
-            fgets(entrada1, sizeof(entrada1), stdin);
-            op = atoi(entrada1);
-
-            switch (op)
+          case 1:
+            if (totalSalas < 5)
             {
-            case 1:
-              if (totalSalas < 5)
-              {
-                system("cls");
-                criarSala(totalSalas);
-                mostrarSala(salas[totalSalas].sala, totalSalas, LINHA, COLUNA);
-                printf("\n*Linha > -- *Coluna ^\n");
-                printf("1 - Assento reservado\n0 - Assento disponivel\n");
-                totalSalas++;
-                printf("Sala criada!\n");
-                system("pause");
-              }
-              else
-              {
-                printf("Numero de salas excedido!\n");
-                system("pause");
-              }
-              break;
-
-            case 2:
-              printf("Digite o numero da sala que voce deseja alterar o filme: ");
-              scanf("%d", &numeroSala);
-              while (getchar() != '\n')
-                ;
-
-              for (int i = 0; i < totalSalas; i++)
-              {
-                if (salas[i].numeroSala == numeroSala)
-                {
-                  printf("Digite o nome do novo filme: ");
-                  fgets(salas[i].nomeFilme, TAM_NOME, stdin);
-                  mostrarSala(salas[i].sala, i, LINHA, COLUNA);
-                }
-              }
+              system("cls");
+              criarSala(totalSalas);
+              mostrarSala(salas[totalSalas].sala, totalSalas, LINHA, COLUNA);
+              printf("\n*Linha > -- *Coluna ^\n");
+              printf("1 - Assento reservado\n0 - Assento disponivel\n");
+              totalSalas++;
+              printf("Sala criada!\n");
               system("pause");
-              break;
-            case 3:
-              for (int i = 0; i < totalSalas; i++)
+            }
+            else
+            {
+              printf("Numero de salas excedido!\n");
+              system("pause");
+            }
+            break;
+
+          case 2:
+            printf("Digite o numero da sala que voce deseja alterar o filme: ");
+            scanf("%d", &numeroSala);
+            while (getchar() != '\n')
+              ;
+
+            for (int i = 0; i < totalSalas; i++)
+            {
+              if (salas[i].numeroSala == numeroSala)
               {
+                printf("Digite o nome do novo filme: ");
+                fgets(salas[i].nomeFilme, TAM_NOME, stdin);
                 mostrarSala(salas[i].sala, i, LINHA, COLUNA);
               }
-              system("pause");
-              break;
-            case 4:
-              printf("Digite o numero da sala que voce deseja excluir o filme: ");
-              scanf("%d", &numeroSala);
-              while (getchar() != '\n')
-                ;
-
-              for (int i = 0; i < totalSalas; i++)
-              {
-                if (salas[i].numeroSala == numeroSala)
-                {
-                  strcpy(salas[i].nomeFilme, "Sessao sem filme.");
-                }
-              }
-              printf("Sessao excluida!\n");
-              system("pause");
-              break;
-            case 5:
-              op = 5;
-              printf("Saindo...\n");
-              system("pause");
-              break;
-            default:
-              printf("Opcao invalida!");
-              system("pause");
-              break;
             }
-          } while (op != 5);
-        }
-        else
-        {
-          printf("Senha incorreta!");
-        }
+            system("pause");
+            break;
+          case 3:
+            for (int i = 0; i < totalSalas; i++)
+            {
+              mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+            }
+            system("pause");
+            break;
+          case 4:
+            printf("Digite o numero da sala que voce deseja excluir o filme: ");
+            scanf("%d", &numeroSala);
+            while (getchar() != '\n')
+              ;
+
+            for (int i = 0; i < totalSalas; i++)
+            {
+              if (salas[i].numeroSala == numeroSala)
+              {
+                strcpy(salas[i].nomeFilme, "Sessao sem filme.");
+              }
+            }
+            printf("Sessao excluida!\n");
+            system("pause");
+            break;
+          case 5:
+            op = 5;
+            printf("Saindo...\n");
+            system("pause");
+            break;
+          default:
+            printf("Opcao invalida!");
+            system("pause");
+            break;
+          }
+        } while (op != 5);
       }
-      else
+      else if (userLogado != -1)
       {
         char nomeFilmeUser[TAM_NOME];
         char entradaLinha[10];
@@ -232,30 +245,47 @@ int main()
             }
             break;
           case 2:
-          	printf("Digite o nome do filme que deseja: ");
-          	fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
-          	
-          	for(int i = 0; i < totalSalas; i++){
-          		if(strcmp(salas[i].nomeFilme, nomeFilmeUser) == 0){
-          			mostrarSala(salas[i].sala, i, LINHA, COLUNA);
-          			
-          			printf("Digite a linha que deseja reservar o assento: ");
-          			fgets(entradaLinha, sizeof(entradaLinha), stdin);
-          			printf("Digite a coluna que deseja reservar o assento: ");
-          			fgets(entradaColuna, sizeof(entradaColuna), stdin);
-          			
-          			linha = atoi(entradaLinha) - 1;
-          			coluna = atoi(entradaColuna) - 1;
-          			
-          			salas[i].sala[linha][coluna] = 1;
-          			printf("Assento reservado!\n");
-				  }else{
-				  	printf("Nenhuma sessão com esse filme disponivel! :()\n");
-				  }
-			  }
+            printf("Digite o nome do filme que deseja: ");
+            fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
+
+            for (int i = 0; i < totalSalas; i++)
+            {
+              if (strcmp(salas[i].nomeFilme, nomeFilmeUser) == 0)
+              {
+                mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+
+                printf("Digite a linha que deseja reservar o assento: ");
+                fgets(entradaLinha, sizeof(entradaLinha), stdin);
+                printf("Digite a coluna que deseja reservar o assento: ");
+                fgets(entradaColuna, sizeof(entradaColuna), stdin);
+
+                linha = atoi(entradaLinha) - 1;
+                coluna = atoi(entradaColuna) - 1;
+
+                salas[i].sala[linha][coluna] = 1;
+                users[userLogado].reserva = &salas[i];
+                printf("Assento reservado!\n");
+              }
+              else
+              {
+                printf("Nenhuma sessao com esse filme disponivel! :()\n");
+              }
+            }
             break;
           case 3:
-            /* code */
+            printf("Digite o nome do filme que deseja retirar sua reserva: ");
+            fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
+            for (int i = 0; i < totalSalas; i++)
+            {
+              if (strcmp(salas[i].nomeFilme, nomeFilmeUser) == 0)
+              {
+                mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+
+                printf("Deseja remover suas reservas?");
+                // A FAZER
+              }
+            }
+
             break;
           case 4:
             /* code */
@@ -272,6 +302,17 @@ int main()
       }
       break;
     case 2:
+      printf("Digite o seu nome de usuario:");
+      fgets(user, sizeof(user), stdin);
+      printf("Digite sua senha: ");
+      fgets(senha, sizeof(senha), stdin);
+
+      strcpy(users[totalUsers].nome, user);
+      strcpy(users[totalUsers].senha, senha);
+      users[totalUsers].indice++;
+      totalUsers++;
+      printf("Usuario cadastrado com indice %d!\n", users[totalUsers].indice);
+      system("pause");
       break;
     case 3:
       printf("Saindo...\n");
