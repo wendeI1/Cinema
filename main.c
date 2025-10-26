@@ -25,7 +25,7 @@ struct Sala
 struct User users[100];
 struct Sala salas[5];
 
-int verificarUser(char user[10], char senha[10], int totalUser)
+int verificarUser(char user[TAM_NOME], char senha[10], int totalUser)
 {
   for (int i = 0; i < totalUser; i++)
   {
@@ -34,7 +34,7 @@ int verificarUser(char user[10], char senha[10], int totalUser)
       return i;
     }
   }
-  return 0;
+  return -1;
 }
 
 void criarSala(int totalSalas)
@@ -82,7 +82,7 @@ void mostrarSala(int sala[LINHA][COLUNA], int totalSala, int linhas, int colunas
 
 int main()
 {
-  char user[10];
+  char user[TAM_NOME];
   char senha[10];
   int totalUsers = 0;
   int userLogado = -1;
@@ -300,18 +300,24 @@ int main()
           }
         } while (op != 5);
       }
+      else
+      {
+        printf("Usuario nao cadastrado! :(\n");
+        system("pause");
+      }
       break;
     case 2:
       printf("Digite o seu nome de usuario:");
       fgets(user, sizeof(user), stdin);
+      user[strcspn(user, "\n")] = '\0';
       printf("Digite sua senha: ");
       fgets(senha, sizeof(senha), stdin);
+      senha[strcspn(senha, "\n")] = '\0';
 
       strcpy(users[totalUsers].nome, user);
       strcpy(users[totalUsers].senha, senha);
-      users[totalUsers].indice++;
+      printf("Cadastro Efetuado!\n");
       totalUsers++;
-      printf("Usuario cadastrado com indice %d!\n", users[totalUsers].indice);
       system("pause");
       break;
     case 3:
