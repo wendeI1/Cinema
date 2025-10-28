@@ -37,6 +37,27 @@ int verificarUser(char user[TAM_NOME], char senha[10], int totalUser)
   return -1;
 }
 
+void mostrarUsers(int totalUsers)
+{
+  if (totalUsers > 0)
+  {
+    printf("Clientes cadastrados: \n");
+    for (int i = 0; i < totalUsers; i++)
+    {
+
+      printf("ID: %d\n", users[i].indice);
+      printf("Cliente: %s\n", users[i].nome);
+      printf("Reserva: %s\n", users[i].reserva->nomeFilme);
+      printf("-----------------------");
+    }
+  }
+  else
+  {
+    printf("Nenhum usuario cadastrado! :(\n");
+    system("pause");
+  }
+}
+
 void criarSala(int totalSalas)
 {
   char horarioTemp[10];
@@ -127,7 +148,8 @@ int main()
           printf("2 - Editar sessao\n");
           printf("3 - Ver sessoes\n");
           printf("4 - Excluir sessao\n");
-          printf("5 - Sair\n");
+          printf("5 - Ver clientes\n");
+          printf("6 - Sair\n");
           fgets(entrada1, sizeof(entrada1), stdin);
           op = atoi(entrada1);
 
@@ -193,7 +215,10 @@ int main()
             system("pause");
             break;
           case 5:
-            op = 5;
+            mostrarUsers(totalUsers);
+            break;
+          case 6:
+            op = 6;
             printf("Saindo...\n");
             system("pause");
             break;
@@ -202,7 +227,7 @@ int main()
             system("pause");
             break;
           }
-        } while (op != 5);
+        } while (op != 6);
       }
       else if (userLogado != -1)
       {
@@ -238,13 +263,16 @@ int main()
               {
                 mostrarSala(salas[i].sala, i, LINHA, COLUNA);
               }
+              system("pause");
             }
             else
             {
               printf("Sem sessoes disponiveis! :(\n");
+              system("pause");
             }
             break;
           case 2:
+            system("cls");
             printf("Digite o nome do filme que deseja: ");
             fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
 
@@ -265,30 +293,54 @@ int main()
                 salas[i].sala[linha][coluna] = 1;
                 users[userLogado].reserva = &salas[i];
                 printf("Assento reservado!\n");
+                system("pause");
               }
               else
               {
-                printf("Nenhuma sessao com esse filme disponivel! :()\n");
+                printf("Nenhuma sessao com esse filme disponivel! :(\n");
+                system("pause");
               }
             }
             break;
           case 3:
-            printf("Digite o nome do filme que deseja retirar sua reserva: ");
-            fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
-            for (int i = 0; i < totalSalas; i++)
+            if (totalSalas > 0)
             {
-              if (strcmp(salas[i].nomeFilme, nomeFilmeUser) == 0)
+              char assentoLinha[1];
+              char assentoColuna[1];
+              system("cls");
+              printf("Digite o nome do filme que deseja retirar sua reserva: ");
+              fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
+              for (int i = 0; i < totalUsers; i++)
               {
-                mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+                if (strcmp(users[userLogado].reserva->nomeFilme, nomeFilmeUser) == 0)
+                {
+                  mostrarSala(users[userLogado].reserva->sala, i, LINHA, COLUNA);
 
-                printf("Deseja remover suas reservas?");
-                // A FAZER
+                  printf("Digite a linha do assento que deseja remover: ");
+                  fgets(assentoLinha, sizeof(assentoLinha), stdin);
+                  printf("Digite a coluna do assento que deseja remover: ");
+                  fgets(assentoColuna, sizeof(assentoColuna), stdin);
+
+                  linha = atoi(assentoLinha);
+                  coluna = atoi(assentoColuna);
+
+                  users[userLogado].reserva->sala[linha][coluna] = 0;
+                  users[userLogado].reserva = NULL;
+                  printf("Reserva excluida!\n");
+                  system("pause");
+                }
               }
+            }
+            else
+            {
+              printf("Sem sessoes disponiveis! :(\n");
+              system("pause");
             }
 
             break;
           case 4:
-            /* code */
+            // ADICIONAR INFOS SOBRE A CCINEMORK
+            printf("placeholder");
             break;
           case 5:
             op = 5;
@@ -322,9 +374,12 @@ int main()
       break;
     case 3:
       printf("Saindo...\n");
+      system("pause");
       sair = 1;
       break;
     default:
+      printf("Opcao invalida!\n");
+      system("pause");
       break;
     }
   } while (sair == 0);
