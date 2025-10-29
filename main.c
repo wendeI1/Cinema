@@ -54,7 +54,6 @@ void mostrarUsers(int totalUsers)
   else
   {
     printf("Nenhum usuario cadastrado! :(\n");
-    system("pause");
   }
 }
 
@@ -216,6 +215,7 @@ int main()
             break;
           case 5:
             mostrarUsers(totalUsers);
+            system("pause");
             break;
           case 6:
             op = 6;
@@ -243,6 +243,7 @@ int main()
         // sobre a ccinemork
         do
         {
+          system("cls");
           printf("Bem vindo ao CCinemork!\n");
           printf("1 - Acessar sessoes disponiveis\n");
           printf("2 - Reservar assento\n");
@@ -278,9 +279,9 @@ int main()
 
             for (int i = 0; i < totalSalas; i++)
             {
+              mostrarSala(salas[i].sala, i, LINHA, COLUNA);
               if (strcmp(salas[i].nomeFilme, nomeFilmeUser) == 0)
               {
-                mostrarSala(salas[i].sala, i, LINHA, COLUNA);
 
                 printf("Digite a linha que deseja reservar o assento: ");
                 fgets(entradaLinha, sizeof(entradaLinha), stdin);
@@ -339,8 +340,9 @@ int main()
 
             break;
           case 4:
-            // ADICIONAR INFOS SOBRE A CCINEMORK
-            printf("placeholder");
+        	system("cls");
+            printf("O Ccinemork nasceu como um projeto desenvolvido por estudantes dos cursos de Ciência da Computação e Análise e Desenvolvimento de Sistemas, unindo tecnologia, criatividade e paixão pelo cinema. \nNosso objetivo é criar uma plataforma moderna e intuitiva para gerenciar e divulgar sessões de cinema, oferecendo uma experiência digital completa, do catálogo de filmes à compra de ingressos, \ntudo com praticidade e inovação.Mais do que um simples cinema, o Ccinemork representa a aplicação prática do que aprendemos em sala de aula, colocados em ação para transformar código em experiência real.");
+            system("pause");
             break;
           case 5:
             op = 5;
@@ -365,12 +367,19 @@ int main()
       printf("Digite sua senha: ");
       fgets(senha, sizeof(senha), stdin);
       senha[strcspn(senha, "\n")] = '\0';
-
-      strcpy(users[totalUsers].nome, user);
-      strcpy(users[totalUsers].senha, senha);
-      printf("Cadastro Efetuado!\n");
-      totalUsers++;
-      system("pause");
+	
+	  if(verificarUser(user, senha, totalUsers) == -1)
+	  {
+	  	strcpy(users[totalUsers].nome, user);
+      	strcpy(users[totalUsers].senha, senha);
+      	printf("Cadastro Efetuado!\n");
+      	totalUsers++;
+      	system("pause");
+	  }else
+	  {
+	  	printf("Usuario ja cadastrado!\n");
+	  	system("pause");
+	  }
       break;
     case 3:
       printf("Saindo...\n");
