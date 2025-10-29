@@ -236,11 +236,6 @@ int main()
         char entradaColuna[10];
         int linha, coluna;
         printf("Ola %s!\n", user);
-        // TO DO: Implementar interface de usuario e suas respectivas funÃ§Ãµes
-        // acessar sala disponivel
-        // reservar assentos
-        // cancelar reserva
-        // sobre a ccinemork
         do
         {
           system("cls");
@@ -273,49 +268,77 @@ int main()
             }
             break;
           case 2:
-            system("cls");
-            printf("Digite o nome do filme que deseja: ");
-            fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
-
-            for (int i = 0; i < totalSalas; i++)
-            {
-              mostrarSala(salas[i].sala, i, LINHA, COLUNA);
-              if (strcmp(salas[i].nomeFilme, nomeFilmeUser) == 0)
-              {
-
-                printf("Digite a linha que deseja reservar o assento: ");
-                fgets(entradaLinha, sizeof(entradaLinha), stdin);
-                printf("Digite a coluna que deseja reservar o assento: ");
-                fgets(entradaColuna, sizeof(entradaColuna), stdin);
-
-                linha = atoi(entradaLinha) - 1;
-                coluna = atoi(entradaColuna) - 1;
-
-                salas[i].sala[linha][coluna] = 1;
-                users[userLogado].reserva = &salas[i];
-                printf("Assento reservado!\n");
-                system("pause");
-              }
-              else
-              {
-                printf("Nenhuma sessao com esse filme disponivel! :(\n");
-                system("pause");
-              }
-            }
+            if(totalSalas > 0)
+			{
+				system("cls");
+				printf("Salas disponiveis: \n");
+				
+				for(int i = 0; i < totalSalas; i++)
+				{
+					mostrarSala(salas[i].sala, i, LINHA, COLUNA);	
+				}
+	            
+	            printf("Digite o nome do filme que deseja: ");
+	            fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
+				system("cls");
+				
+	            for (int i = 0; i < totalSalas; i++)
+	            {
+	              if (strcmp(salas[i].nomeFilme, nomeFilmeUser) == 0)
+	              {
+					mostrarSala(salas[i].sala, i, LINHA, COLUNA);
+					
+	                printf("Digite a linha que deseja reservar o assento: ");
+	                fgets(entradaLinha, sizeof(entradaLinha), stdin);
+	                printf("Digite a coluna que deseja reservar o assento: ");
+	                fgets(entradaColuna, sizeof(entradaColuna), stdin);
+	
+	                linha = atoi(entradaLinha) - 1;
+	                coluna = atoi(entradaColuna) - 1;
+	
+	                salas[i].sala[linha][coluna] = 1;
+	                users[userLogado].reserva = &salas[i];
+	                printf("Assento reservado!\n");
+	                system("pause");
+	              }
+	              else
+	              {
+	                printf("Nenhuma sessao com esse filme disponivel! :(\n");
+	                system("pause");
+	              }
+	            }	
+			}else
+			{
+				printf("Nenhuma sessao disponvel! :(\n");
+				system("pause");
+			}
             break;
           case 3:
             if (totalSalas > 0)
             {
+            	if(users[userLogado].reserva->sala == NULL)
+				{
+            		printf("Voce nao reservou nenhum assento!\n");
+					system("pause");
+					break;
+				}
+				
               char assentoLinha[1];
               char assentoColuna[1];
               system("cls");
+              
+              printf("Suas reservas: \n");
+              for(int i = 0; i < totalSalas; i++)
+			  {
+              	mostrarSala(users[userLogado].reserva->sala, i, LINHA, COLUNA);
+			  }
               printf("Digite o nome do filme que deseja retirar sua reserva: ");
               fgets(nomeFilmeUser, sizeof(nomeFilmeUser), stdin);
+              senha[strcspn(nomeFilmeUser, "\n")] = '\0';
               for (int i = 0; i < totalUsers; i++)
               {
                 if (strcmp(users[userLogado].reserva->nomeFilme, nomeFilmeUser) == 0)
                 {
-                  mostrarSala(users[userLogado].reserva->sala, i, LINHA, COLUNA);
 
                   printf("Digite a linha do assento que deseja remover: ");
                   fgets(assentoLinha, sizeof(assentoLinha), stdin);
@@ -341,7 +364,7 @@ int main()
             break;
           case 4:
         	system("cls");
-            printf("O Ccinemork nasceu como um projeto desenvolvido por estudantes dos cursos de Ciência da Computação e Análise e Desenvolvimento de Sistemas, unindo tecnologia, criatividade e paixão pelo cinema. \nNosso objetivo é criar uma plataforma moderna e intuitiva para gerenciar e divulgar sessões de cinema, oferecendo uma experiência digital completa, do catálogo de filmes à compra de ingressos, \ntudo com praticidade e inovação.Mais do que um simples cinema, o Ccinemork representa a aplicação prática do que aprendemos em sala de aula, colocados em ação para transformar código em experiência real.");
+            printf("O Ccinemork nasceu como um projeto desenvolvido por estudantes dos cursos de Ciência da Computação e Análise e Desenvolvimento de Sistemas, unindo tecnologia, criatividade e paixão pelo cinema. \nNosso objetivo é criar uma plataforma moderna e intuitiva para gerenciar e divulgar sessões de cinema, oferecendo uma experiência digital completa, do catálogo de filmes à compra de ingressos, \ntudo com praticidade e inovação.Mais do que um simples cinema, o Ccinemork representa a aplicação prática do que aprendemos em sala de aula, colocados em ação para transformar código em experiência real.\n");
             system("pause");
             break;
           case 5:
