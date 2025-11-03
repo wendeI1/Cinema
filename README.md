@@ -1,5 +1,5 @@
 # CCinemork - Sistema de Gerenciamento de Cinema
-Projeto do segundo semestre de Ciência da Computação na insituição de ensino Braz Cubas
+Projeto do segundo semestre de Ciência da Computação na instituição de ensino Braz Cubas
 
 `CCinemork` é um sistema simples de gerenciamento e reserva de assentos de cinema, implementado na linguagem C. Este projeto foi desenvolvido como uma aplicação de console para simular as operações básicas de um cinema, incluindo um painel administrativo e uma área para clientes.
 
