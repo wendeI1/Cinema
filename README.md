@@ -1,3 +1,6 @@
+> ⚠️ **Nota:** Este é um projeto desenvolvido no segundo semestre de Ciência da Computação na instituição Braz Cubas. Por se tratar de um trabalho acadêmico, algumas funcionalidades podem não estar 100% polidas e pequenos bugs podem ocorrer.
+
+
 # CCinemork - Sistema de Gerenciamento de Cinema
 Projeto do segundo semestre de Ciência da Computação na instituição de ensino Braz Cubas
 
@@ -33,7 +36,6 @@ Funcionalidades disponíveis para o cliente:
 * **Reservar Assento:** Permite ao usuário escolher um filme, uma linha e uma coluna para reservar um assento vago (marcado com `0`).
 * **Cancelar Reserva:** Permite ao usuário remover uma reserva existente, liberando o assento (marcado com `1`).
 * **Sobre:** Exibe uma breve descrição do projeto.
-
 ## 🛠️ Como Compilar e Executar
 
 ### Pré-requisitos
